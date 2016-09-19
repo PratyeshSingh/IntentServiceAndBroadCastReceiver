@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.pratyeshsingh.wynkworkshop.api.MyDownloader;
@@ -30,18 +31,46 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<MyContent> listData = new ArrayList<>();
     MyAdapter<MyContent> mMyAdapter;
 
+
+    HashMap<String, String> imageList = new HashMap<>();
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        mMyAdapter = new MyAdapter<>(this, listData);
+        mMyAdapter = new MyAdapter<>(imageList, this, listData, serviceConnection);
         listView.setAdapter(mMyAdapter);
 
         loadList();
 
     }
+
+
+    private void showDialogue() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideDialogue() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            showDialogue();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            //// TODO: 19/09/16
+            hideDialogue();
+        }
+    };
 
     private void loadList() {
         final Hashtable<String, String> header = new Hashtable<>();

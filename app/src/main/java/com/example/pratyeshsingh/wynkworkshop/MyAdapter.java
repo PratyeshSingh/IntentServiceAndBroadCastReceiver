@@ -23,9 +23,13 @@ public class MyAdapter<T> extends BaseAdapter {
     private LayoutInflater inflater = null;
     ArrayList<T> dataList;
     Activity activity;
+    ServiceConnection serviceConnection;
+    HashMap<String, String> imageList;
 
-    public MyAdapter(Activity activity, ArrayList dataList) {
+    public MyAdapter(HashMap<String, String> imageList, Activity activity, ArrayList dataList, ServiceConnection serviceConnection) {
+        this.imageList = imageList;
         this.activity = activity;
+        this.serviceConnection = serviceConnection;
         this.dataList = dataList;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -93,7 +97,6 @@ public class MyAdapter<T> extends BaseAdapter {
             onDownloadClick(imageUrl);
         }
 
-        HashMap<String, String> imageList = new HashMap<>();
 
         public void onDownloadClick(String imageUrl) {
 
@@ -107,16 +110,5 @@ public class MyAdapter<T> extends BaseAdapter {
         }
 
 
-        private ServiceConnection serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                //// TODO: 19/09/16
-            }
-        };
     }
 }
