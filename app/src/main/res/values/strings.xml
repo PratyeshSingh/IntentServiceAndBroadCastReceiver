@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WynkWorkShop</string>
+    <string name="internal_error">Some Internal Server Error</string>
+    <string name="no_internet_connection_found">No Internet connection found</string>
+</resources>
