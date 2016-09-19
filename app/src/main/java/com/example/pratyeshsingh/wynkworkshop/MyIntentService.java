@@ -1,8 +1,12 @@
 package com.example.pratyeshsingh.wynkworkshop;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Binder;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
 import com.example.pratyeshsingh.wynkworkshop.api.MyDownloader;
 
@@ -12,16 +16,42 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class MyIntentService extends IntentService {
+public class MyIntentService extends Service {
+    private IBinder mBinder = new MyBinder();
 
-    public MyIntentService() {
-        super("MyIntentService");
+    public class MyBinder extends Binder {
+        MyIntentService getService() {
+            return MyIntentService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        onHandle(intent);
+        return mBinder;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        onHandle(intent);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        mChronometer.stop();
     }
 
     ArrayList<String> listData = new ArrayList<>();
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
+
+    protected void onHandle(Intent intent) {
         if (intent != null) {
             String imageUrl = intent.getStringExtra("imageUrl");
             listData.add(imageUrl);

@@ -74,6 +74,8 @@ public class MyAdapter<T> extends BaseAdapter {
         if (item instanceof MyContent) {
             holder.imageName.setText(((MyContent) item).getImageDescription());
             holder.download.setTag(((MyContent) item).getImageUrl());
+            if (((MyContent) item).isStatus())
+                holder.download.setText("Downloaded");
         }
 
         return vi;
