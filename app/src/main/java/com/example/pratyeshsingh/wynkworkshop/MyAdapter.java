@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,8 @@ public class MyAdapter<T> extends BaseAdapter {
         public void onDownloadClick(String imageUrl) {
             Intent intent = new Intent(MainActivity.action1);
             intent.putExtra("imageUrl", imageUrl);
-            activity.sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+//            activity.sendBroadcast(intent);
         }
     }
 }

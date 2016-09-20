@@ -69,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
         mMyBroadCastReceiver = new MyBroadCastReceiver();
 
         // Registers the MyBroadCastReceiver and its intent filters
-//        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMyBroadCastReceiver, statusIntentFilter);
-        registerReceiver(mMyBroadCastReceiver, statusIntentFilter);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMyBroadCastReceiver, statusIntentFilter);
+//        registerReceiver(mMyBroadCastReceiver, statusIntentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mMyBroadCastReceiver);
-//        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mMyBroadCastReceiver);
+//        unregisterReceiver(mMyBroadCastReceiver);
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mMyBroadCastReceiver);
     }
 
     public void downloadAll(View view) {
         Intent intent = new Intent(MainActivity.action3);
-//        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+//        sendBroadcast(intent);
     }
 
     public class MyBroadCastReceiver extends BroadcastReceiver {
