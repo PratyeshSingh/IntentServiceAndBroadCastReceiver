@@ -1,12 +1,9 @@
 package com.example.pratyeshsingh.wynkworkshop;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
-import android.content.Context;
-import android.os.Binder;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.pratyeshsingh.wynkworkshop.api.MyDownloader;
 
@@ -16,46 +13,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class MyIntentService extends Service {
-    private IBinder mBinder = new MyBinder();
+public class MyIntentService extends IntentService {
 
-    public class MyBinder extends Binder {
-        MyIntentService getService() {
-            return MyIntentService.this;
-        }
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        onHandle(intent);
-        return mBinder;
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-        onHandle(intent);
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        mChronometer.stop();
+    public MyIntentService() {
+        super("MyIntentService");
     }
 
     ArrayList<String> listData = new ArrayList<>();
 
-
-    protected void onHandle(Intent intent) {
+    @Override
+    protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            String imageUrl = intent.getStringExtra("imageUrl");
-            listData.add(imageUrl);
+            listData.addAll(intent.getStringArrayListExtra("listData"));
 
+            Log.d("onHandleIntent", listData.size() + "");
 
             ExecutorService executor = Executors.newFixedThreadPool(2);
             Iterator<String> it = listData.iterator();
@@ -68,8 +39,8 @@ public class MyIntentService extends Service {
             while (!executor.isTerminated()) {
             }
 
-            String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.length());
-            MyDownloader.downloadFile(imageUrl, filename);
+            Intent stopIntent = new Intent(MainActivity.action2);
+            sendBroadcast(stopIntent);
 
         }
     }

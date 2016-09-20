@@ -23,15 +23,11 @@ public class MyAdapter<T> extends BaseAdapter {
     private LayoutInflater inflater = null;
     ArrayList<T> dataList;
     Activity activity;
-    ServiceConnection serviceConnection;
-    HashMap<String, String> imageList;
 
-    public MyAdapter(HashMap<String, String> imageList, Activity activity, ArrayList dataList, ServiceConnection serviceConnection) {
-        this.imageList = imageList;
+    public MyAdapter(Activity activity, ArrayList dataList) {
         this.activity = activity;
-        this.serviceConnection = serviceConnection;
         this.dataList = dataList;
-        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -55,7 +51,6 @@ public class MyAdapter<T> extends BaseAdapter {
     public void refresh() {
         notifyDataSetChanged();
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -88,9 +83,7 @@ public class MyAdapter<T> extends BaseAdapter {
         public ViewHolder(View vi) {
             imageName = (TextView) vi.findViewById(R.id.imageName);
             download = (TextView) vi.findViewById(R.id.download);
-
             download.setOnClickListener(this);
-
         }
 
         @Override
@@ -99,18 +92,10 @@ public class MyAdapter<T> extends BaseAdapter {
             onDownloadClick(imageUrl);
         }
 
-
         public void onDownloadClick(String imageUrl) {
-
-            String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.length());
-            if (!imageList.containsKey(filename)) {
-                imageList.put(filename, imageUrl);
-                Intent intent = new Intent(activity, MyIntentService.class);
-                intent.putExtra("imageUrl", imageUrl);
-                activity.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-            }
+            Intent intent = new Intent(MainActivity.action1);
+            intent.putExtra("imageUrl", imageUrl);
+            activity.sendBroadcast(intent);
         }
-
-
     }
 }
